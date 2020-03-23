@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "996643883004",
+    "firebase_url": "https://psikologku-deeb4.firebaseio.com",
+    "project_id": "psikologku-deeb4",
+    "storage_bucket": "psikologku-deeb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996643883004:android:4c0228eace6156a37bd479",
+        "android_client_info": {
+          "package_name": "com.example.psikologiku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996643883004-4dc3nfdnkkqjen082hgd91pr4jjg03bq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.psikologiku",
+            "certificate_hash": "ca92f5a98b655952385c516d9cbbb84f838ebfec"
+          }
+        },
+        {
+          "client_id": "996643883004-3vg3rebn98jobas8jbvtgtht6nhjj026.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA_7hjYquzNbyPGGRfHVXhHpnbajjLHWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996643883004-3vg3rebn98jobas8jbvtgtht6nhjj026.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996643883004:android:4d37574c1c3ca8637bd479",
+        "android_client_info": {
+          "package_name": "com.example.psikologku_psikolog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996643883004-3vg3rebn98jobas8jbvtgtht6nhjj026.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA_7hjYquzNbyPGGRfHVXhHpnbajjLHWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996643883004-3vg3rebn98jobas8jbvtgtht6nhjj026.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
