@@ -5,6 +5,6 @@
         android:title="Logout"
         />
     <item
-        android:id="@+id/midtrans_demo"
-        android:title="Midtrans Demo"/>
+        android:id="@+id/midtrans"
+        android:title="Midtrans Topup"/>
 </menu>

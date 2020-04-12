@@ -3,10 +3,7 @@ package com.example.psikologku_psikolog.Artikel;
 import java.util.Date;
 
 public class Artikel {
-    private String judul;
-    private String isi_artikel;
-    private String tanggal_artikel;
-    private String penulis;
+    private String judul,isi_artikel,tanggal_artikel,penulis;
 
     public String getJudul() {
         return judul;

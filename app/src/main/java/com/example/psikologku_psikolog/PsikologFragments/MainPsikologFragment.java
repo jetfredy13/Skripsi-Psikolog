@@ -9,13 +9,35 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.psikologku_psikolog.MainActivity;
 import com.example.psikologku_psikolog.R;
+import com.example.psikologku_psikolog.SDKConfig;
 import com.example.psikologku_psikolog.midtrans_demo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.koushikdutta.async.http.AsyncHttpClient;
+import com.midtrans.sdk.corekit.BuildConfig;
+import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback;
+import com.midtrans.sdk.corekit.core.MidtransSDK;
+import com.midtrans.sdk.corekit.core.SdkCoreFlowBuilder;
+import com.midtrans.sdk.corekit.core.TransactionRequest;
+import com.midtrans.sdk.corekit.core.themes.CustomColorTheme;
+import com.midtrans.sdk.corekit.models.snap.TransactionResult;
+import com.midtrans.sdk.uikit.SdkUIFlowBuilder;
 
-public class MainPsikologFragment extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class MainPsikologFragment extends AppCompatActivity implements TransactionFinishedCallback{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +50,7 @@ public class MainPsikologFragment extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new PsikologHomeFragment()).commit();
         }
+        initMidtransSDK();
     }
 
     @Override
@@ -48,7 +71,8 @@ public class MainPsikologFragment extends AppCompatActivity {
                 edit.clear().commit();
                 startActivity(intent);
                 break;
-            case R.id.midtrans_demo:
+            case R.id.midtrans:
+                //actionMidtrans();
                 intent = new Intent(MainPsikologFragment.this, midtrans_demo.class);
                 startActivity(intent);
                 break;
@@ -56,6 +80,17 @@ public class MainPsikologFragment extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void initMidtransSDK()
+    {
+        SdkUIFlowBuilder.init()
+                .setContext(this)
+                .setMerchantBaseUrl(SDKConfig.MERCHANT_BASE_CHECKOUT_URL)
+                .setClientKey(SDKConfig.MERCHANT_CLIENT_KEY)
+                .setTransactionFinishedCallback(this)
+                .enableLog(true)
+                .setColorTheme(new CustomColorTheme("#FFE51255", "#B61548", "#FFE51255"))
+                .buildSDK();
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -64,6 +99,9 @@ public class MainPsikologFragment extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.nav_home:
                             selectedFragment = new PsikologHomeFragment();
+                            break;
+                        case R.id.nav_konseling:
+                            selectedFragment = new PsikologListKonselingFragment();
                             break;
                         case R.id.nav_paket:
                             selectedFragment = new PaketKonsultasiFragment();
@@ -76,4 +114,36 @@ public class MainPsikologFragment extends AppCompatActivity {
                     return true;
                 }
             };
+
+    @Override
+    public void onTransactionFinished(TransactionResult transactionResult) {
+        if(transactionResult.getResponse() != null)
+        {
+            switch (transactionResult.getStatus()){
+                case TransactionResult.STATUS_SUCCESS:
+                    Toast.makeText(this,"Transaction Finished :"+ transactionResult.getResponse().getTransactionId(), Toast.LENGTH_SHORT).show();
+                    break;
+                case TransactionResult.STATUS_PENDING:
+                    Toast.makeText(this,"Transaction Pending ID : "+ transactionResult.getResponse().getTransactionId(), Toast.LENGTH_SHORT).show();
+                    break;
+                case TransactionResult.STATUS_FAILED:
+                    Toast.makeText(this,"Transaction Failed ID : "+ transactionResult.getResponse().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    break;
+                case TransactionResult.STATUS_INVALID:
+                    Toast.makeText(this,"Transaction Invalid : "+ transactionResult.getResponse().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            transactionResult.getResponse().getValidationMessages();
+        }else if(transactionResult.isTransactionCanceled()){
+            Toast.makeText(this,"Transaction Canceled",Toast.LENGTH_SHORT).show();
+        }else{
+            if(transactionResult.getStatus().equalsIgnoreCase(TransactionResult.STATUS_FAILED))
+            {
+                Toast.makeText(this,"Transaction Invalid",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "Transaction Finished with failure",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

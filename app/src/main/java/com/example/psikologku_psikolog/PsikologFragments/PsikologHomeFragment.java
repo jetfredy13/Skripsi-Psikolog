@@ -57,14 +57,10 @@ public class PsikologHomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        sp = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String id = sp.getString("id","");
         return view;
     }
-
     private void loadArtikel()
     {
-        list_psikolog = new ArrayList<>();
         list_artikel = new ArrayList<>();
         ref = FirebaseDatabase.getInstance().getReference("Artikel");
         ref.addValueEventListener(new ValueEventListener() {
@@ -74,41 +70,37 @@ public class PsikologHomeFragment extends Fragment {
                 for(DataSnapshot snap : dataSnapshot.getChildren())
                 {
                     Artikel art = snap.getValue(Artikel.class);
-                    list_artikel.add(art);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        list_psikolog = new ArrayList<>();
-        ref = FirebaseDatabase.getInstance().getReference("Psikolog");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list_psikolog.clear();
-                for(int i =0; i<list_artikel.size() ; i++)
-                {
-                    for(DataSnapshot snap : dataSnapshot.getChildren())
-                    {
-                        if(snap.getKey().equals(list_artikel.get(i).getPenulis()))
-                        {
-                            Psikolog psikolog = snap.getValue(Psikolog.class);
-                            list_psikolog.add(psikolog);
+                    /*ref = FirebaseDatabase.getInstance().getReference("Psikolog");
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            list_psikolog.clear();
+                            for(int i =0; i<list_artikel.size() ; i++)
+                            {
+                                for(DataSnapshot snap : dataSnapshot.getChildren())
+                                {
+                                    if(snap.getKey().equals(list_artikel.get(i).getPenulis()))
+                                    {
+                                        Psikolog psikolog = snap.getValue(Psikolog.class);
+                                        list_psikolog.add(psikolog);
+                                    }
+                                }
+                            }
                         }
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });*/
+                    list_artikel.add(art);
+                    artikel_adapter = new ArtikelAdapter(getContext(),list_artikel);
+                    rec_view_artikel.setAdapter(artikel_adapter);
+                    artikel_adapter.notifyDataSetChanged();
                 }
-                artikel_adapter = new ArtikelAdapter(getContext(),list_artikel,list_psikolog);
-                rec_view_artikel.setAdapter(artikel_adapter);
-                artikel_adapter.notifyDataSetChanged();
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 }

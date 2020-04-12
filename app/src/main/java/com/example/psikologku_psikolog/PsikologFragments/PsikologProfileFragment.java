@@ -91,7 +91,7 @@ public class PsikologProfileFragment extends Fragment {
         jam_akhir = view.findViewById(R.id.jam_akhir_konsultasi);
         spinner_hari = view.findViewById(R.id.spinner_hari);
         rec_view_jadwal_harian = view.findViewById(R.id.jadwal_harian);
-        btnJadwal = view.findViewById(R.id.tambah_jadwal_harian);
+        btnJadwal = view.findViewById(R.id.set_jadwal_konseling);
         ArrayAdapter<CharSequence> spAdapter = ArrayAdapter.createFromResource(this.getActivity(),R.array.hari,android.R.layout.simple_spinner_item);
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_hari.setAdapter(spAdapter);
@@ -258,7 +258,8 @@ public class PsikologProfileFragment extends Fragment {
         });
 
     }
-    private void uploadImage(){
+    private void uploadImage()
+    {
         sp = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         final String id = sp.getString("id","");
         final ProgressDialog pd = new ProgressDialog(getContext());

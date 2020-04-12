@@ -1,6 +1,7 @@
 package com.example.psikologku_psikolog.PsikologFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -15,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.psikologku_psikolog.CreatePaket;
 import com.example.psikologku_psikolog.Konsultasi.PaketKonsultasi;
 import com.example.psikologku_psikolog.Konsultasi.PaketKonsultasiAdapter;
 import com.example.psikologku_psikolog.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,12 +35,11 @@ import java.util.List;
 
 public class PaketKonsultasiFragment extends Fragment {
 
-    Button btnAdd,btnUpdate,btnDelete;
-    EditText nama_paket,harga,jumlah_sesi;
+
     DatabaseReference ref;
-    PaketKonsultasi paket;
     RecyclerView rec_view_paket;
     CollectionReference collectionReference;
+    FloatingActionButton fab_paket;
     private List<PaketKonsultasi> list_paket;
     private PaketKonsultasiAdapter paketAdapter;
     SharedPreferences sp;
@@ -54,26 +56,22 @@ public class PaketKonsultasiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_paket_konsultasi, container, false);
-        paket = new PaketKonsultasi();
-        btnAdd = view.findViewById(R.id.tambah_paket);
-        nama_paket = view.findViewById(R.id.nama_paket);
-        harga = view.findViewById(R.id.harga_paket);
         rec_view_paket = view.findViewById(R.id.rec_view_paket);
         rec_view_paket.setHasFixedSize(true);
         rec_view_paket.setLayoutManager(new LinearLayoutManager(getContext()));
-        jumlah_sesi = view.findViewById(R.id.jumlah_sesi);
         sp = getContext().getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         final String id = sp.getString("id","");
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        fab_paket = view.findViewById(R.id.fab_add_paket);
+        fab_paket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ref = FirebaseDatabase.getInstance().getReference("Psikolog").child(id).child("Paket Konseling");
-                paket.setHarga(harga.getText().toString());
-                paket.setNama_paket(nama_paket.getText().toString());
-                paket.setJumlah_sesi(jumlah_sesi.getText().toString());
-                ref.push().setValue(paket);
+                Intent intent = new Intent(getActivity(), CreatePaket.class);
+                startActivity(intent);
             }
         });
+        /*
+
+         */
         loadPaket();
         return view;
     }

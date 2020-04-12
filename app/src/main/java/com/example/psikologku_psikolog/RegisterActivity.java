@@ -142,7 +142,6 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), RESULT_LOAD_IMAGE1);
     }
-
     private boolean UploadImage(){
         boolean sukses = false;
         if(FilePath != null)

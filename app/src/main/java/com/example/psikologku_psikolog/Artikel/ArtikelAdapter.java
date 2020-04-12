@@ -1,6 +1,7 @@
 package com.example.psikologku_psikolog.Artikel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.psikologku_psikolog.Psikolog;
 import com.example.psikologku_psikolog.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 public class ArtikelAdapter extends RecyclerView.Adapter<ArtikelAdapter.ArtikelViewHolder> {
     private List<Artikel> list_artikel;
-    private List<Psikolog> list_psikolog;
+    Psikolog psikolog;
+    DatabaseReference reference;
+    //private List<Psikolog> list_psikolog;
     private Context context;
-    public ArtikelAdapter (Context ctx , List<Artikel> listArtikel, List<Psikolog> listPsikolog)
+    public ArtikelAdapter (Context ctx , List<Artikel> listArtikel)
     {
         this.context = ctx;
         this.list_artikel = listArtikel;
-        this.list_psikolog = listPsikolog;
+        //this.list_psikolog = listPsikolog;
     }
     @NonNull
     @Override
@@ -33,13 +41,32 @@ public class ArtikelAdapter extends RecyclerView.Adapter<ArtikelAdapter.ArtikelV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArtikelViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ArtikelViewHolder holder, int position) {
         final Artikel artikel = list_artikel.get(position);
-        final Psikolog psikolog = list_psikolog.get(position);
-        holder.judul_artikel.setText(artikel.getJudul());
-        holder.isi_artikel.setText(artikel.getIsi_artikel());
-        holder.nama.setText(psikolog.getNama());
-        holder.bidang.setText(psikolog.getBidang());
+        //final Psikolog psikolog = list_psikolog.get(position);
+        reference = FirebaseDatabase.getInstance().getReference("Psikolog").child(artikel.getPenulis());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                psikolog = dataSnapshot.getValue(Psikolog.class);
+                psikolog.setId(dataSnapshot.getKey());
+                holder.judul_artikel.setText(artikel.getJudul());
+                holder.nama.setText(psikolog.getNama());
+                /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context,DetailArtikel.class);
+                        intent.putExtra("Artikel",artikel);
+                        intent.putExtra("Psikolog",psikolog);
+                        context.startActivity(intent);
+                    }
+                }); */
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -55,8 +82,6 @@ public class ArtikelAdapter extends RecyclerView.Adapter<ArtikelAdapter.ArtikelV
             profile_image = itemView.findViewById(R.id.profile_psikolog);
             nama = itemView.findViewById(R.id.nama_psikolog);
             judul_artikel = itemView.findViewById(R.id.judul);
-            isi_artikel = itemView.findViewById(R.id.isi_artikel);
-            bidang = itemView.findViewById(R.id.bidang);
         }
     }
 }

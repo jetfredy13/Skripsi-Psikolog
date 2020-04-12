@@ -1,6 +1,8 @@
 package com.example.psikologku_psikolog;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private  String Nama;
     private  String Email;
     private  String Password;

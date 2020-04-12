@@ -38,32 +38,29 @@ public class midtrans_demo extends AppCompatActivity implements TransactionFinis
     private TransactionRequest initTransactionRequest() {
         // Create new Transaction Request
         TransactionRequest transactionRequestNew = new
-                TransactionRequest(System.currentTimeMillis() + "", 20000);
+                TransactionRequest(System.currentTimeMillis() + "", 100000);
 
         //set customer details
         transactionRequestNew.setCustomerDetails(initCustomerDetails());
-
-
         // set item details
-        ItemDetails itemDetails = new ItemDetails("1", 20000, 1, "Trekking Shoes");
+        ItemDetails itemDetails = new ItemDetails("1", 100000, 1, "Topup");
 
         // Add item details into item detail list.
         ArrayList<ItemDetails> itemDetailsArrayList = new ArrayList<>();
         itemDetailsArrayList.add(itemDetails);
         transactionRequestNew.setItemDetails(itemDetailsArrayList);
 
-
         // Create creditcard options for payment
         CreditCard creditCard = new CreditCard();
         creditCard.setSaveCard(false); // when using one/two click set to true and if normal set to  false
 
-//        this methode deprecated use setAuthentication instead
-//        creditCard.setSecure(true); // when using one click must be true, for normal and two click (optional)
+        //        this methode deprecated use setAuthentication instead
+        //        creditCard.setSecure(true); // when using one click must be true, for normal and two click (optional)
 
         creditCard.setAuthentication(CreditCard.AUTHENTICATION_TYPE_3DS);
 
         // noted !! : channel migs is needed if bank type is BCA, BRI or MyBank
-//        creditCard.setChannel(CreditCard.MIGS); //set channel migs
+        //creditCard.setChannel(CreditCard.MIGS); //set channel migs
         creditCard.setBank(BankType.BCA); //set spesific acquiring bank
         transactionRequestNew.setCreditCard(creditCard);
         return transactionRequestNew;
